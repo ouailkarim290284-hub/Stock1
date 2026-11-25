@@ -1177,8 +1177,6 @@
   }
 
 </style>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   #authGateOverlay {
     position: fixed;
@@ -1228,22 +1226,21 @@
     cursor: pointer;
   }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-<!-- بوابة تسجيل الدخول والربط مع Supabase -->
+<!-- بوابة تسجيل الدخول -->
 <div id="authGateOverlay" style="display:none;">
   <div class="auth-box">
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <h2 style="font-size:1.15rem; color:#1e3a8a;">نظام إدارة المخازن — تسجيل الدخول</h2>
-      <span class="badge" id="sbConnStatusBadge">Supabase</span>
     </div>
-    <p class="muted-text">أدخل بيانات الحساب للتحقق من الصلاحيات وفتح قاعدة البيانات السحابية.</p>
+    <p class="muted-text">أدخل اسم المستخدم وكلمة المرور الممنوحة لك للدخول حسب الصلاحيات.</p>
 
     <div class="auth-tabs">
       <button type="button" class="btn btn-primary btn-xs" id="tabLoginModeBtn">تسجيل الدخول</button>
       <button type="button" class="btn btn-outline-neutral btn-xs" id="tabRegisterModeBtn" style="display:none;">إنشاء حساب جديد</button>
-      <button type="button" class="btn btn-outline-neutral btn-xs" id="tabConfigModeBtn">إعدادات الربط (URL / Key)</button>
     </div>
 
     <form id="supabaseLoginForm" style="display:grid; gap:11px;">
@@ -1252,26 +1249,14 @@
         <input type="text" class="input" id="loginFullNameInput" placeholder="مثال: أحمد بن علي - مخزني">
       </div>
       <div class="field">
-        <label>البريد الإلكتروني</label>
-        <input type="email" class="input" id="loginEmailInput" required placeholder="user@school.dz">
+        <label>اسم المستخدم</label>
+        <input type="text" class="input" id="loginEmailInput" required placeholder="karim">
       </div>
       <div class="field">
         <label>كلمة المرور</label>
         <input type="password" class="input" id="loginPasswordInput" required placeholder="••••••••">
       </div>
       <button type="submit" class="btn btn-primary" id="loginSubmitBtn">دخول إلى البرنامج</button>
-    </form>
-
-    <form id="supabaseConfigForm" style="display:none; gap:11px;">
-      <div class="field">
-        <label>رابط مشروع Supabase (Project URL)</label>
-        <input type="url" class="input" id="sbUrlInput" required placeholder="https://xxxx.supabase.co" dir="ltr">
-      </div>
-      <div class="field">
-        <label>مفتاح Supabase Public Anon Key</label>
-        <input type="text" class="input" id="sbAnonKeyInput" required placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." dir="ltr">
-      </div>
-      <button type="submit" class="btn btn-success btn-sm">حفظ إعدادات الربط</button>
     </form>
 
     <div id="loginErrorMsg" style="color:#b91c1c; font-size:0.82rem; font-weight:700;"></div>
@@ -1294,7 +1279,6 @@
       <button type="button" class="btn btn-primary btn-sm" id="openOrgModalBtn">إعدادات المؤسسة والمديرية</button>
       <button type="button" class="btn btn-outline-success btn-sm" id="quickNewYearBtn">+ فتح سنة جديدة</button>
       <span class="pill pill-org" id="currentUserBadge">المستخدم: غير متصل</span>
-      <button type="button" class="btn btn-outline-neutral btn-sm" id="syncNowBtn" title="مزامنة مع Supabase">↻ مزامنة</button>
       <button type="button" class="btn btn-outline-danger btn-sm" id="logoutBtn">خروج</button>
     </div>
   </div>
@@ -1443,7 +1427,7 @@
         <span class="nav-icon-badge" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         </span>
-        <span class="nav-label">إعدادات المؤسسة والطباعة</span>
+        <span class="nav-label">إعدادات البرنامج</span>
       </button>
 
       </div>
@@ -2597,7 +2581,7 @@
   <!-- إعدادات المؤسسة والمديرية وعنوان المطبوعات -->
   <section class="card" id="sec-settings-page">
     <div class="card-header">
-      <h2>إعدادات المؤسسة والمديرية</h2>
+      <h2>إعدادات البرنامج (المؤسسة والربط بـ Supabase)</h2>
       <div style="display:flex; gap:8px; align-items:center;">
         <button type="button" class="btn btn-outline-neutral btn-sm section-home-btn" onclick="openHomeView()">الصفحة الرئيسية</button>
         <button type="button" class="btn btn-outline-neutral btn-sm section-home-btn" onclick="openHomeView()">الصفحة الرئيسية</button>
@@ -2642,7 +2626,30 @@
     </form>
 
     <!-- معاينة المطبوعة: المديرية والمؤسسة في الأعلى، وفي الأسفل العنوان والتاريخ وأسفله المسير المالي ومن اليمين المخزني -->
-    
+    <div class="voucher-group-box" id="programSupabaseConnectionBox">
+      <div class="voucher-group-head">
+        <div>
+          <span class="voucher-num-badge">إعدادات الاتصال بقاعدة بيانات Supabase</span>
+          <span class="muted-text" style="margin-right:8px;">تحديد رابط المشروع (Project URL) ومفتاح (Anon Public Key) ومزامنة بيانات البرنامج</span>
+        </div>
+        <span class="badge" id="dbSyncIndicator">حالة المزامنة: متصل</span>
+      </div>
+      <form class="form-grid" id="inAppSupabaseForm" style="margin-bottom:0;">
+        <div class="field">
+          <label>Supabase Project URL</label>
+          <input type="url" class="input" id="inAppSbUrl" dir="ltr" placeholder="https://xxxx.supabase.co" required>
+        </div>
+        <div class="field">
+          <label>Supabase Anon Public Key</label>
+          <input type="text" class="input" id="inAppSbKey" dir="ltr" placeholder="eyJhbGciOi..." required>
+        </div>
+        <div class="field" style="justify-content:flex-end; flex-direction:row; align-items:flex-end; gap:8px;">
+          <button type="submit" class="btn btn-success btn-sm">حفظ وتحديث الربط</button>
+          <button type="button" class="btn btn-outline-primary btn-sm" id="pushLocalToDbBtn">رفع البيانات الحالية للسحابة</button>
+        </div>
+      </form>
+    </div>
+
     <div class="voucher-group-box" id="settingsPageUsersPermissionsBox">
       <div class="voucher-group-head">
         <div>
@@ -2658,16 +2665,16 @@
 
       <form class="form-grid" id="settingsQuickAddUserForm" style="margin-bottom:10px;">
         <div class="field">
-          <label>اسم المستخدم / الصفة</label>
+          <label>الاسم الكامل / الصفة</label>
           <input type="text" class="input" id="setNewUserName" placeholder="مثال: أمين المخزن - مخزني" required>
         </div>
         <div class="field">
-          <label>البريد الإلكتروني للدخول</label>
-          <input type="email" class="input" id="setNewUserEmail" placeholder="user@school.dz" required>
+          <label>اسم المستخدم للدخول</label>
+          <input type="text" class="input" id="setNewUserEmail" placeholder="مثال: samir" required>
         </div>
         <div class="field">
-          <label>كلمة المرور (للحسابات الجديدة)</label>
-          <input type="password" class="input" id="setNewUserPassword" minlength="6" placeholder="6 أحرف أو أكثر">
+          <label>كلمة المرور الممنوحة للمستخدم</label>
+          <input type="text" class="input" id="setNewUserPassword" minlength="4" placeholder="أدخل كلمة المرور" required>
         </div>
         <div class="field">
           <label>الدور الوظيفي</label>
@@ -2754,36 +2761,12 @@
   <!-- إدارة صلاحيات المستخدمين وربط Supabase -->
   <section class="card" id="sec-users-permissions">
     <div class="card-header">
-      <h2>إدارة صلاحيات الدخول والعمل وربط Supabase</h2>
+      <h2>إدارة صلاحيات الدخول والعمل</h2>
       <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
         <button type="button" class="btn btn-outline-neutral btn-sm section-home-btn" onclick="openHomeView()">الصفحة الرئيسية</button>
         <span class="badge" id="usersCountBadge">0 مستخدم</span>
         <button type="button" class="btn btn-primary btn-sm" id="refreshUsersBtn">↻ تحديث القائمة</button>
       </div>
-    </div>
-
-    <div class="voucher-group-box">
-      <div class="voucher-group-head">
-        <div>
-          <span class="voucher-num-badge">إعدادات الاتصال بقاعدة بيانات Supabase</span>
-          <span class="muted-text" style="margin-right:8px;">يمكنك تعديل رابط المشروع ومفتاح API العام من هنا في أي وقت</span>
-        </div>
-        <span class="badge" id="dbSyncIndicator">حالة المزامنة: متصل</span>
-      </div>
-      <form class="form-grid" id="inAppSupabaseForm" style="margin-bottom:0;">
-        <div class="field">
-          <label>Supabase Project URL</label>
-          <input type="url" class="input" id="inAppSbUrl" dir="ltr" placeholder="https://xxxx.supabase.co" required>
-        </div>
-        <div class="field">
-          <label>Supabase Anon Public Key</label>
-          <input type="text" class="input" id="inAppSbKey" dir="ltr" placeholder="eyJhbGciOi..." required>
-        </div>
-        <div class="field" style="justify-content:flex-end; flex-direction:row; align-items:flex-end; gap:8px;">
-          <button type="submit" class="btn btn-success btn-sm">حفظ وتحديث الربط</button>
-          <button type="button" class="btn btn-outline-primary btn-sm" id="pushLocalToDbBtn">رفع البيانات الحالية للسحابة</button>
-        </div>
-      </form>
     </div>
 
     
@@ -2801,12 +2784,12 @@
           <input type="text" class="input" id="newUserFullName" placeholder="مثال: سمير بن عمر - مخزني" required>
         </div>
         <div class="field">
-          <label>البريد الإلكتروني</label>
-          <input type="email" class="input" id="newUserEmail" placeholder="samir@school.dz" required>
+          <label>اسم المستخدم للدخول</label>
+          <input type="text" class="input" id="newUserEmail" placeholder="مثال: samir" required>
         </div>
         <div class="field">
-          <label>كلمة المرور الأولية</label>
-          <input type="password" class="input" id="newUserPassword" minlength="6" placeholder="6 أحرف أو أكثر" required>
+          <label>كلمة المرور الممنوحة للمستخدم</label>
+          <input type="text" class="input" id="newUserPassword" minlength="4" placeholder="أدخل كلمة المرور" required>
         </div>
         <div class="field">
           <label>الدور الوظيفي</label>
@@ -6185,12 +6168,41 @@ function collectVoucherItemsGroup(ds, record) {
   renderAll();
 
   // ==========================================================================
-  // الاتصال المباشر بـ Supabase بدون اسم مستخدم وكلمة مرور
+  // نظام المصادقة والصلاحيات والمزامنة مع Supabase (المدير: karim / karim1984)
   // ==========================================================================
-  const SB_CFG_KEY = "warehouse-supabase-config-v1";
-  const DEFAULT_SB_URL = "https://YOUR_PROJECT_REF.supabase.co";
-  const DEFAULT_SB_KEY = "YOUR_SUPABASE_ANON_KEY";
-  const DIRECT_ACCESS_MODE = true;
+  const SB_CFG_KEY = "warehouse-supabase-config-v2";
+  const ALLOWED_USERS_CACHE_KEY = "warehouse-users-permissions-v2";
+  const SESSION_KEY = "warehouse-active-session-v2";
+  const DEFAULT_SB_URL = "https://pdvlzjfomwbqezjcjewb.supabase.co";
+  const DEFAULT_SB_KEY = "Sb_publishable_EuwRl4vn8rLj9G8Be1-C_A_Lhc0t8mO";
+
+  const ALL_ADMIN_CONTROLS = [
+    "openOrgModalBtn",
+    "quickNewYearBtn",
+    "pushLocalToDbBtn",
+    "settingsPageUsersPermissionsBox",
+    "sec-settings-page",
+    "sec-users-permissions",
+    "sec-archive-rollover",
+    "sec-archive-restore-box"
+  ];
+
+  const DEFAULT_ADMIN_PROFILE = {
+    id: "user-admin-karim",
+    username: "karim",
+    email: "karim",
+    password: "karim1984",
+    full_name: "كريم - مدير النظام",
+    role: "admin",
+    can_view: true,
+    can_create: true,
+    can_edit: true,
+    can_delete: true,
+    can_print: true,
+    can_manage_users: true,
+    allowed_warehouses: [...DEFAULT_WAREHOUSES],
+    is_active: true
+  };
 
   function getSupabaseConfig() {
     try {
@@ -6207,54 +6219,152 @@ function collectVoucherItemsGroup(ds, record) {
   let sbConfig = getSupabaseConfig();
   let sbClient = null;
   let isRegisterMode = false;
+  let currentUserProfile = null;
 
-  let currentUserProfile = {
-    id: "direct-guest-admin",
-    email: "",
-    full_name: "اتصال مباشر (بدون تسجيل دخول)",
-    role: "admin",
-    can_view: true,
-    can_create: true,
-    can_edit: true,
-    can_delete: true,
-    can_print: true,
-    can_manage_users: true,
-    allowed_warehouses: [...DEFAULT_WAREHOUSES],
-    is_active: true
-  };
+  function isAdminRole() {
+    return Boolean(
+      currentUserProfile &&
+      currentUserProfile.is_active !== false &&
+      String(currentUserProfile.role || "").toLowerCase() === "admin"
+    );
+  }
 
-  function hasPerm() {
+  function hasPerm(permKey) {
+    if (!currentUserProfile || currentUserProfile.is_active === false) return false;
+    if (isAdminRole()) return true;
+    return Boolean(currentUserProfile[permKey]);
+  }
+
+  function guardAdminOnly(actionLabel = "الوصول إلى الإعدادات") {
+    if (!isAdminRole()) {
+      showToast(`غير مسموح: ${actionLabel} مخصص للمدير (karim) فقط`);
+      if (typeof openHomeView === "function") openHomeView();
+      return false;
+    }
     return true;
   }
 
-  function applyUserPermissionsToUI() {
-    const userBadge = document.getElementById("currentUserBadge");
-    if (userBadge) {
-      userBadge.textContent = sbClient ? "الاتصال: مباشر مع Supabase" : "الاتصال: محلي / بانتظار الربط";
+  function getCachedAllowedUsers() {
+    let list = [];
+    try {
+      const raw = JSON.parse(localStorage.getItem(ALLOWED_USERS_CACHE_KEY) || "[]");
+      if (Array.isArray(raw)) list = raw;
+    } catch (e) {
+      list = [];
     }
-    const logoutBtn = document.getElementById("logoutBtn");
-    if (logoutBtn) logoutBtn.style.display = "none";
+    const adminIdx = list.findIndex(
+      (u) => String(u.username || u.email || "").toLowerCase() === "karim"
+    );
+    if (adminIdx === -1) {
+      list.unshift({ ...DEFAULT_ADMIN_PROFILE });
+    } else {
+      list[adminIdx] = {
+        ...DEFAULT_ADMIN_PROFILE,
+        ...list[adminIdx],
+        username: "karim",
+        email: "karim",
+        password: list[adminIdx].password || "karim1984",
+        role: "admin",
+        can_view: true,
+        can_create: true,
+        can_edit: true,
+        can_delete: true,
+        can_print: true,
+        can_manage_users: true,
+        is_active: true
+      };
+    }
+    return list;
+  }
 
+  function setCachedAllowedUsers(list) {
+    try {
+      const clean = Array.isArray(list) ? list : [];
+      if (!clean.some((u) => String(u.username || u.email || "").toLowerCase() === "karim")) {
+        clean.unshift({ ...DEFAULT_ADMIN_PROFILE });
+      }
+      localStorage.setItem(ALLOWED_USERS_CACHE_KEY, JSON.stringify(clean));
+    } catch (e) {}
+  }
+
+  function applyUserPermissionsToUI() {
     const gate = document.getElementById("authGateOverlay");
-    if (gate) gate.style.display = "none";
+    const userBadge = document.getElementById("currentUserBadge");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const adminFlag = isAdminRole();
 
-    document.querySelectorAll(".perm-disabled").forEach((el) => {
-      el.classList.remove("perm-disabled");
+    if (!currentUserProfile || currentUserProfile.is_active === false) {
+      if (gate) gate.style.display = "flex";
+      if (userBadge) userBadge.textContent = "المستخدم: غير متصل";
+      if (logoutBtn) logoutBtn.style.display = "none";
+      return;
+    }
+
+    if (gate) gate.style.display = "none";
+    if (logoutBtn) logoutBtn.style.display = "inline-flex";
+    if (userBadge) {
+      const uname = currentUserProfile.username || currentUserProfile.email || "مستخدم";
+      userBadge.textContent = `المستخدم: ${uname} (${adminFlag ? "مدير" : currentUserProfile.role})`;
+    }
+
+    ALL_ADMIN_CONTROLS.forEach((ctrlId) => {
+      const el = document.getElementById(ctrlId);
+      if (!el) return;
+      if (el.tagName === "SECTION") {
+        if (!adminFlag && el.classList.contains("active-section-view")) {
+          el.classList.remove("active-section-view");
+          if (typeof openHomeView === "function") openHomeView();
+        }
+      } else {
+        el.style.display = adminFlag ? "" : "none";
+      }
+    });
+
+    document.querySelectorAll('.hub-btn[data-target="sec-settings-page"], .hub-btn[data-target="sec-users-permissions"], .hub-btn[data-target="sec-archive-rollover"], .hub-btn[data-target="sec-archive-restore-box"]').forEach((btn) => {
+      btn.style.display = adminFlag ? "" : "none";
+    });
+
+    const canCreate = hasPerm("can_create");
+    const canEdit = hasPerm("can_edit");
+    const canDelete = hasPerm("can_delete");
+    const canPrint = hasPerm("can_print");
+
+    document.querySelectorAll('button[type="submit"], #recSubmitBtn, #issSubmitBtn, #catSubmitBtn').forEach((btn) => {
+      if (btn.closest("#supabaseLoginForm") || btn.closest("#dedicatedSettingsForm") || btn.closest("#inAppSupabaseForm") || btn.closest("#settingsQuickAddUserForm") || btn.closest("#adminAddUserForm")) {
+        return;
+      }
+      const isEditBtn = (btn.id || "").toLowerCase().includes("edit") || (btn.textContent || "").includes("تعديل");
+      const allowed = isEditBtn ? canEdit : canCreate;
+      btn.disabled = !allowed;
+      btn.classList.toggle("perm-disabled", !allowed);
+    });
+
+    document.querySelectorAll('button[onclick*="delete"], button[onclick*="Delete"]').forEach((btn) => {
+      btn.disabled = !canDelete;
+      btn.classList.toggle("perm-disabled", !canDelete);
+    });
+
+    document.querySelectorAll('button[onclick*="print"], button[id*="print"], button[id*="Print"]').forEach((btn) => {
+      btn.disabled = !canPrint;
+      btn.classList.toggle("perm-disabled", !canPrint);
     });
 
     const ds = typeof getViewingDataset === "function" ? getViewingDataset() : null;
-    const whList = (ds && Array.isArray(ds.warehouseList) && ds.warehouseList.length)
-      ? ds.warehouseList
-      : WAREHOUSES;
+    const whList = adminFlag
+      ? ((ds && Array.isArray(ds.warehouseList) && ds.warehouseList.length) ? ds.warehouseList : WAREHOUSES)
+      : (Array.isArray(currentUserProfile.allowed_warehouses) && currentUserProfile.allowed_warehouses.length
+          ? currentUserProfile.allowed_warehouses
+          : WAREHOUSES);
 
     ["recWarehouse", "issWarehouse", "openStockWarehouse", "catWarehouseSelect", "whBulkWarehouseSelect"].forEach((id) => {
       const sel = document.getElementById(id);
       if (!sel) return;
       [...sel.options].forEach((opt) => {
-        opt.disabled = false;
+        opt.disabled = !adminFlag && !whList.includes(opt.value);
       });
-      if (whList.length && !whList.includes(sel.value) && sel.options.length) {
-        sel.value = sel.options[0].value;
+      const firstEnabled = [...sel.options].find((o) => !o.disabled);
+      if (firstEnabled && (!sel.value || (!adminFlag && !whList.includes(sel.value)))) {
+        sel.value = firstEnabled.value;
       }
     });
   }
@@ -6268,24 +6378,15 @@ function collectVoucherItemsGroup(ds, record) {
       !sbConfig.key.includes("YOUR_SUPABASE_ANON_KEY")
     );
 
-    const badge = document.getElementById("sbConnStatusBadge");
-    if (badge) {
-      badge.textContent = isConfigured ? "متصل مباشرة" : "يرجى ضبط الرابط والمفتاح";
-    }
-
     const syncInd = document.getElementById("dbSyncIndicator");
     if (syncInd) {
-      syncInd.textContent = isConfigured ? "حالة المزامنة: اتصال مباشر نشط" : "حالة المزامنة: غير مربوط بعد";
+      syncInd.textContent = isConfigured ? "حالة المزامنة: متصل وجاهز" : "حالة المزامنة: غير مربوط بعد";
     }
 
     const inUrl = document.getElementById("inAppSbUrl");
     const inKey = document.getElementById("inAppSbKey");
-    const modalUrl = document.getElementById("sbUrlInput");
-    const modalKey = document.getElementById("sbAnonKeyInput");
     if (inUrl) inUrl.value = sbConfig.url;
     if (inKey) inKey.value = sbConfig.key;
-    if (modalUrl) modalUrl.value = sbConfig.url;
-    if (modalKey) modalKey.value = sbConfig.key;
 
     if (isConfigured && window.supabase) {
       sbClient = window.supabase.createClient(sbConfig.url, sbConfig.key, {
@@ -6300,6 +6401,23 @@ function collectVoucherItemsGroup(ds, record) {
     }
 
     applyUserPermissionsToUI();
+  }
+
+  async function syncUsersWithSupabase(pushLocal = false) {
+    let users = getCachedAllowedUsers();
+    if (!sbClient) {
+      setCachedAllowedUsers(users);
+      return getCachedAllowedUsers();
+    }
+    if (pushLocal) {
+      await sbClient.from("warehouse_users").upsert(users, { onConflict: "username" });
+    }
+    const { data, error } = await sbClient.from("warehouse_users").select("*");
+    if (!error && Array.isArray(data) && data.length > 0) {
+      setCachedAllowedUsers(data);
+      users = getCachedAllowedUsers();
+    }
+    return users;
   }
 
   async function loadStateFromSupabase() {
@@ -6348,7 +6466,7 @@ function collectVoucherItemsGroup(ds, record) {
         isRestoredEditing: state.isRestoredEditing,
         yearsData: state.yearsData
       },
-      updated_by: null,
+      updated_by: currentUserProfile ? (currentUserProfile.username || "karim") : "karim",
       updated_at: new Date().toISOString()
     };
 
@@ -6358,7 +6476,7 @@ function collectVoucherItemsGroup(ds, record) {
       if (showNotification) showToast("فشلت المزامنة مع Supabase: " + error.message);
     } else {
       if (syncInd) syncInd.textContent = "حالة المزامنة: محفوظ في Supabase ✓";
-      if (showNotification) showToast("تمت مزامنة البيانات وحفظها في Supabase مباشرة");
+      if (showNotification) showToast("تمت مزامنة البيانات وحفظها في Supabase بنجاح");
     }
   }
 
@@ -6374,52 +6492,30 @@ function collectVoucherItemsGroup(ds, record) {
     applyUserPermissionsToUI();
   };
 
-  const ALLOWED_USERS_CACHE_KEY = "warehouse-allowed-users-permissions-v1";
-
-  function getCachedAllowedUsers() {
-    try {
-      const raw = JSON.parse(localStorage.getItem(ALLOWED_USERS_CACHE_KEY) || "[]");
-      return Array.isArray(raw) ? raw : [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  function setCachedAllowedUsers(list) {
-    try {
-      localStorage.setItem(ALLOWED_USERS_CACHE_KEY, JSON.stringify(Array.isArray(list) ? list : []));
-    } catch (e) {}
-  }
-
   async function loadUsersPermissionsList() {
     const tbody = document.getElementById("usersPermissionsTableBody");
     const badge = document.getElementById("usersCountBadge");
     if (!tbody) return;
 
-    let users = getCachedAllowedUsers();
-    if (sbClient) {
-      const { data, error } = await sbClient
-        .from("user_profiles")
-        .select("*")
-        .order("created_at", { ascending: true });
-      if (!error && Array.isArray(data) && data.length > 0) {
-        users = data;
-        setCachedAllowedUsers(users);
-      }
-    }
-
+    const users = await syncUsersWithSupabase(false);
     if (badge) badge.textContent = `${users.length} مستخدم`;
 
     tbody.innerHTML = users.map((u) => {
       const whList = Array.isArray(u.allowed_warehouses) ? u.allowed_warehouses : DEFAULT_WAREHOUSES;
+      const uname = u.username || u.email || "";
+      const isMainAdmin = String(uname).toLowerCase() === "karim";
       return `
         <tr data-uid="${u.id}">
           <td>
             <strong>${u.full_name || "مستخدم"}</strong><br>
-            <span class="muted-text">${u.email || ""}</span>
+            <span class="muted-text">المستخدم: ${uname}</span><br>
+            <label style="font-size:0.74rem; color:#475569; display:inline-flex; align-items:center; gap:4px; margin-top:4px;">
+              <span>كلمة المرور:</span>
+              <input type="text" class="input" data-sfield="password" value="${String(u.password || "").replace(/"/g, "&quot;")}" style="width:115px; padding:3px 6px; font-size:0.78rem;">
+            </label>
           </td>
           <td>
-            <select class="select" data-field="role">
+            <select class="select" data-field="role" ${isMainAdmin ? "disabled" : ""}>
               <option value="admin" ${u.role === "admin" ? "selected" : ""}>مدير النظام (Admin)</option>
               <option value="storekeeper" ${u.role === "storekeeper" ? "selected" : ""}>مخزني (Storekeeper)</option>
               <option value="accountant" ${u.role === "accountant" ? "selected" : ""}>مسير مالي (Accountant)</option>
@@ -6445,7 +6541,7 @@ function collectVoucherItemsGroup(ds, record) {
           </td>
           <td>
             <label style="font-size:0.8rem; font-weight:700;">
-              <input type="checkbox" data-field="is_active" ${u.is_active !== false ? "checked" : ""}> مفعّل
+              <input type="checkbox" data-field="is_active" ${u.is_active !== false ? "checked" : ""} ${isMainAdmin ? "disabled" : ""}> مفعّل
             </label>
           </td>
           <td>
@@ -6453,14 +6549,18 @@ function collectVoucherItemsGroup(ds, record) {
           </td>
         </tr>
       `;
-    }).join("") || `<tr><td colspan="6" class="muted-text">الوضع الحالي يعمل بالاتصال المباشر بدون اشتراط تسجيل دخول.</td></tr>`;
+    }).join("");
   }
 
   window.saveUserPermissionsRow = async function (uid) {
+    if (!guardAdminOnly("تعديل صلاحيات المستخدمين")) return;
     const row = document.querySelector(`#usersPermissionsTableBody tr[data-uid="${uid}"]`);
     if (!row) return;
     const allowedWh = [...row.querySelectorAll('input[data-wh]:checked')].map((cb) => cb.dataset.wh);
+    const pwdInput = row.querySelector('[data-field="password"]');
+    const updatedPassword = pwdInput ? pwdInput.value.trim() : "";
     const updates = {
+      ...(updatedPassword ? { password: updatedPassword } : {}),
       role: row.querySelector('[data-field="role"]').value,
       can_view: row.querySelector('[data-field="can_view"]').checked,
       can_create: row.querySelector('[data-field="can_create"]').checked,
@@ -6469,18 +6569,21 @@ function collectVoucherItemsGroup(ds, record) {
       can_print: row.querySelector('[data-field="can_print"]').checked,
       can_manage_users: row.querySelector('[data-field="can_manage_users"]').checked,
       is_active: row.querySelector('[data-field="is_active"]').checked,
-      allowed_warehouses: allowedWh.length ? allowedWh : DEFAULT_WAREHOUSES,
+      allowed_warehouses: allowedWh.length ? allowedWh : [...DEFAULT_WAREHOUSES],
       updated_at: new Date().toISOString()
     };
 
     const cached = getCachedAllowedUsers().map((u) => (String(u.id) === String(uid) ? { ...u, ...updates } : u));
     setCachedAllowedUsers(cached);
 
-    if (sbClient && !String(uid).startsWith("local-")) {
-      const { error } = await sbClient.from("user_profiles").update(updates).eq("id", uid);
-      if (error) {
-        showToast("تم الحفظ محلياً؛ وتعذر التحديث في Supabase: " + error.message);
-        return;
+    if (sbClient) {
+      const target = cached.find((u) => String(u.id) === String(uid));
+      if (target) {
+        const { error } = await sbClient.from("warehouse_users").upsert(target, { onConflict: "username" });
+        if (error) {
+          showToast("تم الحفظ محلياً؛ وتعذر التحديث في Supabase: " + error.message);
+          return;
+        }
       }
     }
     showToast("تم تحديث السجل بنجاح");
@@ -6491,37 +6594,27 @@ function collectVoucherItemsGroup(ds, record) {
     const countBadge = document.getElementById("settingsUsersCountBadge");
     if (!tbody) return;
 
-    let users = getCachedAllowedUsers();
-    if (sbClient) {
-      const { data, error } = await sbClient
-        .from("user_profiles")
-        .select("*")
-        .order("created_at", { ascending: true });
-      if (!error && Array.isArray(data) && data.length > 0) {
-        users = data;
-        setCachedAllowedUsers(users);
-      }
-    }
-
-    if (countBadge) countBadge.textContent = `${users.length} سجل محفوظ`;
-
-    if (!users.length) {
-      tbody.innerHTML = `<tr><td colspan="6" class="muted-text">الاتصال المباشر مفعّل بدون الحاجة إلى اسم مستخدم أو كلمة مرور.</td></tr>`;
-      return;
-    }
+    const users = await syncUsersWithSupabase(false);
+    if (countBadge) countBadge.textContent = `${users.length} مستخدم`;
 
     tbody.innerHTML = users.map((u) => {
       const whList = Array.isArray(u.allowed_warehouses) && u.allowed_warehouses.length
         ? u.allowed_warehouses
         : DEFAULT_WAREHOUSES;
+      const uname = u.username || u.email || "";
+      const isMainAdmin = String(uname).toLowerCase() === "karim";
       return `
         <tr data-settings-uid="${u.id}">
           <td>
             <strong>${u.full_name || "مستخدم"}</strong><br>
-            <span class="muted-text">${u.email || ""}</span>
+            <span class="muted-text">المستخدم: ${uname}</span><br>
+            <label style="font-size:0.74rem; color:#475569; display:inline-flex; align-items:center; gap:4px; margin-top:4px;">
+              <span>كلمة المرور:</span>
+              <input type="text" class="input" data-field="password" value="${String(u.password || "").replace(/"/g, "&quot;")}" style="width:115px; padding:3px 6px; font-size:0.78rem;">
+            </label>
           </td>
           <td>
-            <select class="select" data-sfield="role">
+            <select class="select" data-sfield="role" ${isMainAdmin ? "disabled" : ""}>
               <option value="admin" ${u.role === "admin" ? "selected" : ""}>مدير النظام</option>
               <option value="storekeeper" ${u.role === "storekeeper" ? "selected" : ""}>مخزني</option>
               <option value="accountant" ${u.role === "accountant" ? "selected" : ""}>مسير مالي</option>
@@ -6547,7 +6640,7 @@ function collectVoucherItemsGroup(ds, record) {
           </td>
           <td>
             <label style="font-size:0.8rem; font-weight:700; color:#15803d;">
-              <input type="checkbox" data-sfield="is_active" ${u.is_active !== false ? "checked" : ""}> مفعّل
+              <input type="checkbox" data-sfield="is_active" ${u.is_active !== false ? "checked" : ""} ${isMainAdmin ? "disabled" : ""}> مفعّل
             </label>
           </td>
           <td>
@@ -6559,11 +6652,14 @@ function collectVoucherItemsGroup(ds, record) {
   }
 
   window.saveSettingsUserRow = async function (uid) {
+    if (!guardAdminOnly("حفظ صلاحيات المستخدمين")) return;
     const row = document.querySelector(`#settingsPageUsersTableBody tr[data-settings-uid="${uid}"]`);
     if (!row) return;
     const allowedWh = [...row.querySelectorAll('input[data-swh]:checked')].map((cb) => cb.dataset.swh);
+    const pwdEl = row.querySelector('[data-sfield="password"]');
+    const newPasswordVal = pwdEl ? pwdEl.value.trim() : "";
     const payload = {
-      id: uid,
+      ...(newPasswordVal ? { password: newPasswordVal } : {}),
       role: row.querySelector('[data-sfield="role"]').value,
       can_view: row.querySelector('[data-sfield="can_view"]').checked,
       can_create: row.querySelector('[data-sfield="can_create"]').checked,
@@ -6572,63 +6668,96 @@ function collectVoucherItemsGroup(ds, record) {
       can_print: row.querySelector('[data-sfield="can_print"]').checked,
       can_manage_users: row.querySelector('[data-sfield="can_manage_users"]').checked,
       is_active: row.querySelector('[data-sfield="is_active"]').checked,
-      allowed_warehouses: allowedWh.length ? allowedWh : DEFAULT_WAREHOUSES,
+      allowed_warehouses: allowedWh.length ? allowedWh : [...DEFAULT_WAREHOUSES],
       updated_at: new Date().toISOString()
     };
 
     const cached = getCachedAllowedUsers().map((u) => (String(u.id) === String(uid) ? { ...u, ...payload } : u));
     setCachedAllowedUsers(cached);
 
-    if (sbClient && !String(uid).startsWith("local-")) {
-      const { error } = await sbClient.from("user_profiles").update(payload).eq("id", uid);
-      if (error) {
-        showToast("تم الحفظ محلياً؛ وتعذر التحديث في Supabase: " + error.message);
-        return;
+    if (sbClient) {
+      const target = cached.find((u) => String(u.id) === String(uid));
+      if (target) {
+        const { error } = await sbClient.from("warehouse_users").upsert(target, { onConflict: "username" });
+        if (error) {
+          showToast("تم الحفظ محلياً؛ وتعذر التحديث في Supabase: " + error.message);
+          return;
+        }
       }
     }
     showToast("تم حفظ البيانات بنجاح");
     await renderSettingsPageAllowedUsers();
   };
 
-  document.getElementById("supabaseConfigForm")?.addEventListener("submit", async (e) => {
+  document.getElementById("supabaseLoginForm")?.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const u = document.getElementById("sbUrlInput").value.trim();
-    const k = document.getElementById("sbAnonKeyInput").value.trim();
-    saveSupabaseConfig(u, k);
-    sbConfig = getSupabaseConfig();
+    const errEl = document.getElementById("loginErrorMsg");
+    if (errEl) errEl.textContent = "";
+    const usernameInput = (document.getElementById("loginEmailInput")?.value || "").trim();
+    const passwordInput = (document.getElementById("loginPasswordInput")?.value || "").trim();
+
     initSupabaseClient();
-    await loadStateFromSupabase();
-    showToast("تم حفظ إعدادات الربط وتفعيل الاتصال المباشر بـ Supabase");
+    const users = await syncUsersWithSupabase(false);
+    const matched = users.find(
+      (u) =>
+        String(u.username || u.email || "").toLowerCase() === usernameInput.toLowerCase() &&
+        String(u.password || "") === passwordInput
+    );
+
+    if (!matched) {
+      if (errEl) errEl.textContent = "اسم المستخدم أو الرقم السري غير صحيح.";
+      return;
+    }
+    if (matched.is_active === false) {
+      if (errEl) errEl.textContent = "هذا الحساب موقوف. راجع المدير (karim).";
+      return;
+    }
+
+    currentUserProfile = matched;
+    sessionStorage.setItem(SESSION_KEY, matched.username || matched.email);
+    applyUserPermissionsToUI();
+    if (typeof openHomeView === "function") openHomeView();
+    if (sbClient) {
+      await loadStateFromSupabase();
+    }
+    showToast(`مرحباً ${matched.full_name || matched.username}`);
+  });
+
+  document.getElementById("logoutBtn")?.addEventListener("click", () => {
+    currentUserProfile = null;
+    sessionStorage.removeItem(SESSION_KEY);
+    if (typeof openHomeView === "function") openHomeView();
+    applyUserPermissionsToUI();
   });
 
   document.getElementById("inAppSupabaseForm")?.addEventListener("submit", async (e) => {
     e.preventDefault();
+    if (!guardAdminOnly("تعديل إعدادات Supabase")) return;
     const u = document.getElementById("inAppSbUrl").value.trim();
     const k = document.getElementById("inAppSbKey").value.trim();
     saveSupabaseConfig(u, k);
     sbConfig = getSupabaseConfig();
     initSupabaseClient();
+    await syncUsersWithSupabase(true);
     await loadStateFromSupabase();
-    showToast("تم تحديث إعدادات الربط وتفعيل الاتصال المباشر بـ Supabase");
-  });
-
-  document.getElementById("syncNowBtn")?.addEventListener("click", async () => {
-    initSupabaseClient();
-    await loadStateFromSupabase();
-    showToast("تمت المزامنة المباشرة مع Supabase");
+    showToast("تم تحديث إعدادات الربط والمزامنة مع Supabase");
   });
 
   document.getElementById("pushLocalToDbBtn")?.addEventListener("click", async () => {
+    if (!guardAdminOnly("رفع البيانات للسحابة")) return;
     initSupabaseClient();
+    await syncUsersWithSupabase(true);
     await saveStateToSupabase(true);
   });
 
   document.getElementById("refreshUsersBtn")?.addEventListener("click", async () => {
+    if (!guardAdminOnly("تحديث قائمة المستخدمين")) return;
     await loadUsersPermissionsList();
     showToast("تم تحديث القائمة");
   });
 
   document.getElementById("settingsSaveAllUsersBtn")?.addEventListener("click", async () => {
+    if (!guardAdminOnly("حفظ صلاحيات المستخدمين")) return;
     const rows = [...document.querySelectorAll("#settingsPageUsersTableBody tr[data-settings-uid]")];
     for (const r of rows) {
       await window.saveSettingsUserRow(r.dataset.settingsUid);
@@ -6637,77 +6766,122 @@ function collectVoucherItemsGroup(ds, record) {
   });
 
   document.getElementById("settingsRefreshUsersBtn")?.addEventListener("click", async () => {
+    if (!guardAdminOnly("تحديث قائمة المستخدمين")) return;
     await renderSettingsPageAllowedUsers();
     showToast("تم التحديث");
   });
 
-  document.getElementById("settingsQuickAddUserForm")?.addEventListener("submit", (e) => {
+  document.getElementById("settingsQuickAddUserForm")?.addEventListener("submit", async (e) => {
     e.preventDefault();
+    if (!guardAdminOnly("إضافة مستخدم")) return;
     const fullName = document.getElementById("setNewUserName").value.trim();
-    const email = document.getElementById("setNewUserEmail").value.trim().toLowerCase();
+    const username = document.getElementById("setNewUserEmail").value.trim();
+    const password = document.getElementById("setNewUserPassword").value.trim() || "123456";
     const role = document.getElementById("setNewUserRole").value;
+    if (!username) return;
+
+    const users = getCachedAllowedUsers();
+    if (users.some((u) => String(u.username || u.email || "").toLowerCase() === username.toLowerCase())) {
+      showToast("اسم المستخدم موجود مسبقاً");
+      return;
+    }
+
     const allowedWh = [...document.querySelectorAll("#setNewUserWarehouses input[type='checkbox']:checked")].map((cb) => cb.value);
-    const list = getCachedAllowedUsers();
-    list.push({
-      id: "local-" + Date.now(),
-      email,
-      full_name: fullName || email,
+    const newUser = {
+      id: "user-" + Date.now(),
+      username,
+      email: username,
+      password,
+      full_name: fullName || username,
       role,
-      is_active: true,
-      can_view: true,
-      can_create: true,
-      can_edit: true,
-      can_delete: true,
-      can_print: true,
-      can_manage_users: true,
-      allowed_warehouses: allowedWh.length ? allowedWh : DEFAULT_WAREHOUSES
-    });
-    setCachedAllowedUsers(list);
+      is_active: document.getElementById("setPermLogin") ? document.getElementById("setPermLogin").checked : true,
+      can_view: document.getElementById("setPermView").checked,
+      can_create: document.getElementById("setPermCreate").checked,
+      can_edit: document.getElementById("setPermEdit").checked,
+      can_delete: document.getElementById("setPermDelete").checked,
+      can_print: document.getElementById("setPermPrint").checked,
+      can_manage_users: role === "admin" || document.getElementById("setPermManageUsers").checked,
+      allowed_warehouses: allowedWh.length ? allowedWh : [...DEFAULT_WAREHOUSES]
+    };
+
+    users.push(newUser);
+    setCachedAllowedUsers(users);
+    if (sbClient) {
+      await sbClient.from("warehouse_users").upsert(newUser, { onConflict: "username" });
+    }
     e.target.reset();
     renderSettingsPageAllowedUsers();
-    showToast("تمت الإضافة");
+    loadUsersPermissionsList();
+    showToast(`تمت إضافة المستخدم (${username}) وحفظ صلاحياته`);
   });
 
-  document.getElementById("adminAddUserForm")?.addEventListener("submit", (e) => {
+  document.getElementById("adminAddUserForm")?.addEventListener("submit", async (e) => {
     e.preventDefault();
+    if (!guardAdminOnly("إضافة مستخدم")) return;
     const fullName = document.getElementById("newUserFullName").value.trim();
-    const email = document.getElementById("newUserEmail").value.trim().toLowerCase();
+    const username = document.getElementById("newUserEmail").value.trim();
+    const password = document.getElementById("newUserPassword").value.trim() || "123456";
     const role = document.getElementById("newUserRole").value;
+    if (!username) return;
+
+    const users = getCachedAllowedUsers();
+    if (users.some((u) => String(u.username || u.email || "").toLowerCase() === username.toLowerCase())) {
+      showToast("اسم المستخدم موجود مسبقاً");
+      return;
+    }
+
     const allowedWh = [...document.querySelectorAll("#newUserWarehouseChecks input[type='checkbox']:checked")].map((cb) => cb.value);
-    const list = getCachedAllowedUsers();
-    list.push({
-      id: "local-" + Date.now(),
-      email,
-      full_name: fullName || email,
+    const newUser = {
+      id: "user-" + Date.now(),
+      username,
+      email: username,
+      password,
+      full_name: fullName || username,
       role,
-      is_active: true,
-      can_view: true,
-      can_create: true,
-      can_edit: true,
-      can_delete: true,
-      can_print: true,
-      can_manage_users: true,
-      allowed_warehouses: allowedWh.length ? allowedWh : DEFAULT_WAREHOUSES
-    });
-    setCachedAllowedUsers(list);
+      is_active: document.getElementById("newPermLogin")?.checked !== false,
+      can_view: document.getElementById("newPermView")?.checked !== false,
+      can_create: Boolean(document.getElementById("newPermCreate")?.checked),
+      can_edit: Boolean(document.getElementById("newPermEdit")?.checked),
+      can_delete: Boolean(document.getElementById("newPermDelete")?.checked),
+      can_print: document.getElementById("newPermPrint")?.checked !== false,
+      can_manage_users: role === "admin" || Boolean(document.getElementById("newPermManageUsers")?.checked),
+      allowed_warehouses: allowedWh.length ? allowedWh : [...DEFAULT_WAREHOUSES]
+    };
+
+    users.push(newUser);
+    setCachedAllowedUsers(users);
+    if (sbClient) {
+      await sbClient.from("warehouse_users").upsert(newUser, { onConflict: "username" });
+    }
     e.target.reset();
     loadUsersPermissionsList();
     renderSettingsPageAllowedUsers();
-    showToast("تمت الإضافة");
+    showToast(`تمت إضافة المستخدم (${username}) وحفظ صلاحياته`);
   });
 
   const _origSyncSettingsPageUI = syncSettingsPageUI;
   syncSettingsPageUI = function () {
     _origSyncSettingsPageUI();
-    renderSettingsPageAllowedUsers();
+    if (isAdminRole()) {
+      renderSettingsPageAllowedUsers();
+      loadUsersPermissionsList();
+    }
   };
 
-  // تشغيل الاتصال المباشر فور تحميل الصفحة بدون اسم مستخدم أو كلمة مرور
   initSupabaseClient();
-  renderSettingsPageAllowedUsers();
-  if (sbClient) {
-    loadStateFromSupabase();
-  }
+  try {
+    const savedSess = sessionStorage.getItem(SESSION_KEY);
+    if (savedSess) {
+      const found = getCachedAllowedUsers().find(
+        (u) => String(u.username || u.email || "").toLowerCase() === String(savedSess).toLowerCase()
+      );
+      if (found && found.is_active !== false) {
+        currentUserProfile = found;
+        if (sbClient) loadStateFromSupabase();
+      }
+    }
+  } catch (e) {}
+  applyUserPermissionsToUI();
 
 </script>
 
